@@ -1,0 +1,55 @@
+﻿name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # This repository does not run the contract test suite in CI on purpose.
+      # The suite needs solc and a local Ganache chain, and a green CI badge for
+      # tests that only ever run locally would imply more than it proves.
+      # What is checked here is narrower and honest: the version distinction that
+      # this repository exists to make cannot silently disappear.
+
+      - name: README must state both versions
+        run: |
+          set -e
+          grep -q "V3" README.md
+          grep -q "V4.1" README.md
+          grep -qi "NOT DEPLOYED" README.md
+          echo "README version table present"
+
+      - name: V4.1 must carry its NOT_DEPLOYED marker
+        run: |
+          test -f v4.1-candidate/NOT_DEPLOYED.md
+          grep -qi "never been deployed" v4.1-candidate/NOT_DEPLOYED.md
+          echo "NOT_DEPLOYED marker present"
+
+      - name: the deployed V3 address must appear with its exact value
+        run: |
+          grep -q "0x5A5514F65e1ECB8dE1C369c2703859f5f107ED52" README.md
+          echo "V3 address present"
+
+      - name: no V4.1 address may be claimed
+        run: |
+          set -e
+          # A V4.1 address would be a new 0x address near the V4.1 text. Fail if one appears
+          # that is not the known V3 address or a documented public address.
+          if grep -n "V4.1" README.md | grep -oE "0x[0-9a-fA-F]{40}" | grep -v "0x5A5514F65e1ECB8dE1C369c2703859f5f107ED52"; then
+            echo "A V4.1 address appears in the README. No such address exists."
+            exit 1
+          fi
+          echo "no invented V4.1 address"
+
+      - name: LICENSE must remain standard MIT
+        run: |
+          set -e
+          head -1 LICENSE | grep -q "MIT License"
+          grep -q "Permission is hereby granted" LICENSE
+          echo "LICENSE is standard MIT"
