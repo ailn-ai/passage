@@ -1,0 +1,19 @@
+{
+  "name": "ailn-passage",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AILN Passage ERC-721 contracts. V3 is deployed; V4.1 is an undeployed candidate.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "compile": "node v4.1-candidate/scripts/compile.mjs",
+    "test": "node v4.1-candidate/test/test-all.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ailn-ai/passage.git"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "deployedAt": "2026-10-24T12:29:35.831Z",
+  "chainId": 56,
+  "address": "0x5a5514f65e1ecb8de1c369c2703859f5f107ed52",
+  "txHash": "0x7cd91a0b1132e7886ec659aa5ae6cad8741ee024ed2f89dedd8501d89bc3e998",
+  "blockNumber": 129514013,
+  "gasUsed": 1893645,
+  "costBnb": 0.00009468225,
+  "deployer": "0x6492e9c9396dd03b9b5b8ab0d1c495d0d3f879e9",
+  "fundsTo": "0x83761fa189ef8091f8ebbf56170ad160a0d6b57e",
+  "signers": [
+    "0x831a808cf7a4118f2e71b56993a2f6a988c6d2a7",
+    "0x385e8aa2cf992a1d7cb5a97eb38989f11957dc5f",
+    "0x50816903b0e4b5a83149fa049130411c5f978fb6"
+  ],
+  "bytecodeSize": 9095
+}
