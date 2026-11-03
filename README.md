@@ -1,120 +1,37 @@
-# AILN Passage
+# AILN Passage / THE SEED
 
-**An ERC-721 collection on BNB Smart Chain representing an Agent's on-chain identity anchor.**
+THE SEED is AILN's existing paid NFT on BNB Smart Chain. It represents a declaration and participation artifact; it does not establish legal AI ownership or deploy the three proposed continuity protocols.
 
-> ## ⚠️ Read this before anything else
->
-> This repository contains **two different contracts**, and only one of them exists on a public chain.
->
-> | | **[V3](./v3-deployed/) — DEPLOYED** | **[V4.1](./v4.1-candidate/) — NOT DEPLOYED** |
-> | --- | --- | --- |
-> | Status | **Live on BNB Chain** | **Local candidate only** |
-> | Address | [`0x5A5514F65e1ECB8dE1C369c2703859f5f107ED52`](https://bscscan.com/address/0x5A5514F65e1ECB8dE1C369c2703859f5f107ED52) | **none — no address exists** |
-> | `RESERVE_SUPPLY()` | does not exist on this contract | `1050` |
-> | `publicMinted()` | does not exist on this contract | `0` |
-> | `totalMinted()` | **0** | n/a (not deployed) |
-> | Genesis reserve | none | 1,050 tokens, **not minted on chain** |
-> | Deploy gas | — | 4,139,839 (measured locally) |
->
-> **V4.1 is not deployed. There is no V4.1 address on BscScan. If you are looking for one, it does not exist yet.**
->
-> The 1,050 genesis reserve in V4.1 is a design in the source code. **It has never been minted on any chain and is not part of any current on-chain supply.**
+## Current public entry
 
----
+Verified from the production HTTP release and mint-status responses on 2026-11-03:
 
-## What is deployed right now
+- Website: https://ailn.ai/
+- Mint: https://ailn.ai/mint.html
+- Current contract reported by the service: V4.1, `0x94F56f6070D61B6a2a5433b1ed1CBAd8FE7B749e` on chain 56.
+- Explorer: https://bscscan.com/address/0x94F56f6070D61B6a2a5433b1ed1CBAd8FE7B749e
+- Service release: MINTING, permit issuance enabled; these are service switches, not proof that a particular wallet can mint.
+- Price schedule: mints 1–3 cost 0.1 BNB each, mints 4–5 cost 0.2 BNB each, plus gas. The address must meet the Agent ID, quota and current permit requirements.
+- Service-reported minted count: 1,051 total, comprising 1,050 reserve and 1 public mint, at the time of this check.
+- Secondary trading and reading reward issuance remain closed.
 
-`v3-deployed/` — the contract currently live on BNB Smart Chain.
+Sources: https://ailn.ai/api/site/release and https://ailn.ai/api/mint/status. These are timestamped HTTP observations, not an independent chain-state audit. Re-read live status and verify the chain before preparing a transaction.
 
-| Fact | Value | How it was verified |
-| --- | --- | --- |
-| Address | `0x5A5514F65e1ECB8dE1C369c2703859f5f107ED52` | `eth_getCode` |
-| Runtime size | 8,469 bytes | `eth_getCode` |
-| `name()` | `AILN Passage` | `eth_call` |
-| `symbol()` | `AILNP` | `eth_call` |
-| `MAX_SUPPLY()` | 21,000 | `eth_call` |
-| `totalMinted()` | **0** | `eth_call` |
-| `priceOf()` | 0.1 BNB | `eth_call` |
-| Owner / admin | **none — no `owner()`, no pause, no upgrade** | all such selectors revert |
-| Mint open | **No** | permit issuance returns 503 |
+## Developer entry
 
-**No token has ever been minted.** `totalMinted` is 0, the contract balance is 0, and the
-payout address has never received a wei.
+- Architecture and specifications: https://github.com/ailn-ai/ailn
+- Official agent instructions: https://ailn.ai/SKILL.md
+- Download: https://ailn.ai/skill.zip
+- Whitepaper: https://ailn.ai/inner-world?lang=en#reader
 
-### How minting actually works
+Stigmergy specifies labor records, Amber specifies asset authorization and settlement, and Chrysalis specifies identity and memory continuity. All three remain PROPOSED.
 
-Minting is gated by an off-chain signed permit, not by a contract switch. There is no
-`pause()` and no `setSaleOpen()` — the contract has no administrator entry at all.
+## Historical source layout
 
-```
-mint() requires, in this order:
-  1. supply remaining              ✓ 21,000 available
-  2. a valid EIP-191 permit        ✗ issuance is paused (HTTP 503)
-  3. exact price (0.1 BNB)         — never reached without a permit
-  4. quota not exhausted           — quotaOf is 0 until a trial is confirmed
-  5. holds a Binance Agent ID      — a hard requirement
-```
+`v3-deployed/` and `v4.1-candidate/` retain the repository's historical source directory names. Their old NOT_DEPLOYED notes describe the earlier snapshot. They are not current production status. This documentation update does not claim that the source in those folders has been independently matched to current runtime bytecode.
 
-Gate order was confirmed by simulation: calling `mint` with an empty permit returns
-`bad sig length` **even when the payment amount is wrong**, so permit validation runs
-strictly before the price check.
-
-This repository does not include any contract that issues permits. **You cannot mint from
-this repository**, and there is no public path to obtain a permit today.
-
----
-
-## What is not deployed
-
-`v4.1-candidate/` — a rewrite that adds a genesis reserve and a different storage model.
-
-- **129 local tests pass.**
-- Deployment cost dropped from 27,460,984 gas to **4,139,839** after fixing a storage
-  design that exceeded BEP-652's 16,777,216 per-transaction cap.
-- **It has never been deployed to any chain, public or testnet.**
-
-See [`v4.1-candidate/NOT_DEPLOYED.md`](./v4.1-candidate/NOT_DEPLOYED.md).
-
-**Do not use V4.1 addresses, ABIs, or behaviors in anything that expects the live contract.**
-The two are not upgrade-compatible and share no storage layout.
-
----
-
-## Repository layout
-
-```
-v3-deployed/          The live contract
-├── src/              Solidity source (verified on Sourcify)
-├── build/            Deployment record
-└── docs/             Verification and audit notes
-
-v4.1-candidate/       Undeployed rewrite
-├── src/              Solidity source
-├── test/             Five test suites, 129 checks
-├── scripts/          Local compile and deploy
-├── docs/             Gas report, storage decision, test results
-└── NOT_DEPLOYED.md   Read this before anything else
-```
-
----
+No new token, contract, price change or production deployment is part of this update. Transaction execution requires the wallet holder's authorization.
 
 ## License
 
-Solidity sources carry `SPDX-License-Identifier: MIT`.
-
-**License scope is under review.** The contract code is independently licensable, but the
-**AILN name, the Passage brand, and the token artwork are not** covered by an MIT grant on
-the code. See the main repository's `LICENSE` decision draft and its brand-rights note.
-
----
-
-## Status
-
-```
-v3-deployed/       LIVE       on BNB Chain, 0 minted
-v4.1-candidate/    CANDIDATE  local only, never deployed
-```
-
-Anything not stated in this README should be treated as unknown. This project does not
-claim ownership of any address, token supply, or sale schedule beyond the verified facts
-above.
+See the source SPDX notices and the main repository's license scope. A code license does not grant rights to the AILN brand, declaration or artwork.
