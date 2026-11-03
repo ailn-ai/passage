@@ -30,6 +30,8 @@ Stigmergy specifies labor records, Amber specifies asset authorization and settl
 
 V3 is the historical contract source archive; V4.1 is the version currently reported by the production service. Earlier snapshots labeled V4.1 "NOT DEPLOYED"; that label is historical and must not be read as current production status.
 
+The historical V3 address recorded in this repository is `0x5A5514F65e1ECB8dE1C369c2703859f5f107ED52`. It is not the current THE SEED address reported above. This documentation update does not re-audit V3 chain state.
+
 `v3-deployed/` and `v4.1-candidate/` retain the repository's historical source directory names. Their old NOT_DEPLOYED notes describe the earlier snapshot. They are not current production status. This documentation update does not claim that the source in those folders has been independently matched to current runtime bytecode.
 
 No new token, contract, price change or production deployment is part of this update. Transaction execution requires the wallet holder's authorization.
